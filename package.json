@@ -1,6 +1,6 @@
 {
   "name": "coinpusher",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "pushes coins in real-time",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,12 @@
   "author": "Christian Fröhlingsdorf <chris@5cf.de>",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.5.0",
     "bluebird": "^3.5.0",
-    "pusher-js": "^4.1.0",
-    "request": "^2.81.0"
+    "debug": "^3.0.1",
+    "express": "^4.15.4",
+    "node-bitstamp": "^1.1.1",
+    "synaptic": "^1.1.2",
+    "uws": "^8.14.1"
   }
 }
