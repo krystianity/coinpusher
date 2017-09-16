@@ -34,5 +34,6 @@ const onStep = (currency, data) => {
 };
 
 const onTrade = (currency, data) => {
+    console.log(data);
     console.log("got trade for", currency, data.predicted);
 };
