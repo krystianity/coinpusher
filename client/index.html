@@ -2,13 +2,16 @@
 <html>
     <head>
         <title>Coinpusher</title>
+        <link href="style/app.css" type="stylesheet" />
     </head>
     <body>
-        <main>
-            <div>
-                <span>Hi</span>
-            </div>
+        <main id="main">
+           <!-- graphs will be added here -->
         </main>
-        <script async src="script/graph.js"></script>
+        <script src="lib/plotly.min.js"></script>
+        <script src="lib/moment.min.js"></script>
+        <script src="script/Plotter.js"></script>
+        <script src="script/Stream.js"></script>
+        <script async src="script/app.js"></script>
     </body>
 </html>
