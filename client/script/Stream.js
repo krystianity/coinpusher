@@ -3,9 +3,12 @@
 class Stream {
 
     constructor(url = "ws://localhost:3333/"){
+
         this.url = url;
         this.connection = null;
+
         this.plotters = {};
+        this.predictionDraw = {};
     }
 
     connect(){
@@ -29,10 +32,6 @@ class Stream {
                 data = JSON.parse(data);
             } catch(error){
                 return console.error("failed to parse message", data, error);
-            }
-            
-            if(data.collected){
-                return this._onStep(data.currency, data);
             }
         
             if(data.trade){
@@ -76,8 +75,21 @@ class Stream {
         return this.momentToDateTime(this.timestampToMoment(unix));
     }
 
-    _onStep(currency, {collected, predicted}){
-        console.log("got step for", currency, predicted);
+    //will only return true, if unix timestamp is higher than set for currency
+    checkIfPredictionDrawable(currency, unix){
+        unix = parseInt(unix);
+        
+        if(!this.predictionDraw[currency]){
+            this.predictionDraw[currency] = unix;
+            return true;
+        } else {
+            if(this.predictionDraw[currency] >= unix){
+                return false;
+            } else {
+                this.predictionDraw[currency] = unix;
+                return true;
+            }
+        }
     }
     
     _onTrade(currency, {trade, predicted}){
@@ -88,25 +100,52 @@ class Stream {
 
         let pred = null;
         if(predicted){
+
+            //if a prediction is passed along, we have to map syntetic timestamps
+            //as it only comes with y axis values
             const startingTime = this.timestampToMoment(trade.timestamp);
+            const xUnixTimestamps = [];
             let counter = 1;
             pred = {
                 x: predicted.map(_ => {
                     //create syntetic timestamps for predictions starting from current trade
                     const timeClone = startingTime.clone();
                     timeClone.add(counter * 5, "seconds");
+                    xUnixTimestamps.push(timeClone.valueOf());
                     counter++;
                     return this.momentToDateTime(timeClone);
                 }),
-                y: predicted.map(p => p * 1000)
+                y: predicted
             };
+
+            //after a certain amount of trades, every new trade will contain
+            //a fixed amount of predictions in the future, to keep the prediction
+            //traces in the charts from overwriting each other, we have to filter out
+            //timestamps that have already been set
+            const removeIndices = [];
+
+            for(let i = 0; i < xUnixTimestamps.length; i++){
+                if(!this.checkIfPredictionDrawable(currency, xUnixTimestamps[i])){
+                    removeIndices.push(i);
+                }
+            }
+
+            removeIndices.forEach(index => {
+                pred.x.splice(index, 1);
+                pred.y.splice(index, 1);
+            });
+
+            //check if all predictions are outdated
+            if(!pred.x.length){
+                pred = null;
+            }
         }
 
         this._getOrCreatePlotter(currency).then(plotter => {
 
             const datetime = this.convertTimestamp(trade.timestamp);
-            console.log("trade", currency, datetime, trade.price, predicted);
-            
+            //console.log("trade", currency, datetime, trade.price, predicted);
+
             plotter.updatePlot({
                 x: [datetime],
                 y: [trade.price]

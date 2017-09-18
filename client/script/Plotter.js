@@ -28,7 +28,9 @@ class Plotter {
             name: this.currency,
             x: streamData.x,
             y: streamData.y,
-            line: {color: this.color }
+            line: {
+                color: this.color 
+            }
         };
 
         const pred = {
@@ -37,7 +39,9 @@ class Plotter {
             name: "prediction",
             x: predData.x,
             y: predData.y,
-            line: {color: this.predColor }
+            line: {
+                color: this.predColor 
+            }
         };
         
         const plotData = [stream, pred];
@@ -45,30 +49,76 @@ class Plotter {
         const plotLayout = {
             title: this.title, 
             xaxis: {
-            autorange: true, 
-            range: [],
-            rangeselector: {buttons: [
-                {
-                    count: 1, 
-                    label: "1m", 
-                    step: "month", 
-                    stepmode: "backward"
+                autorange: true, 
+                range: [],
+                rangeselector: {
+                    buttons: [
+                        {
+                            count: 1, 
+                            label: "1m", 
+                            step: "minute", 
+                            stepmode: "backward"
+                        }, 
+                        {
+                            count: 5, 
+                            label: "5m", 
+                            step: "minute", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 10, 
+                            label: "10m", 
+                            step: "minute", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 15, 
+                            label: "15m",
+                            step: "minute", 
+                            stepmode: "backward"
+                        }, 
+                        {
+                            count: 1, 
+                            label: "1h", 
+                            step: "hour", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 6, 
+                            label: "6h", 
+                            step: "hour", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 12, 
+                            label: "12h", 
+                            step: "hour", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 1, 
+                            label: "1d", 
+                            step: "day", 
+                            stepmode: "backward"
+                        },
+                        {
+                            count: 3, 
+                            label: "3d", 
+                            step: "day", 
+                            stepmode: "backward"
+                        },
+                        {
+                            step: "all"
+                        }
+                    ]
                 }, 
-                {
-                    count: 6, 
-                    label: "6m", 
-                    step: "month", 
-                    stepmode: "backward"
-                }, 
-                {step: "all"}
-                ]}, 
-            rangeslider: {range: []}, 
-            type: "date"
+                rangeslider: {range: []}, 
+                type: "date"
             }, 
             yaxis: {
-            autorange: true, 
-            range: [],
-            type: "linear"
+                autorange: true, 
+                range: [],
+                type: "linear"
             }
         };
             
