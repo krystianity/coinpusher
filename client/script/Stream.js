@@ -2,13 +2,25 @@
 
 class Stream {
 
-    constructor(url = "ws://localhost:3333/"){
+    constructor(url = null){
 
-        this.url = url;
+        this.url = url || this.getUrl();
         this.connection = null;
 
         this.plotters = {};
         this.predictionDraw = {};
+
+        window.onresize = () => {
+            Object.keys(this.plotters)
+                .map(key => this.plotters[key])
+                .forEach(plotter => plotter.resize());
+        };
+    }
+
+    getUrl(){
+        const location = window.location;
+        return location.protocol === "https:" ? "wss:" : "ws:" + "//" 
+            + location.hostname + (location.port ? ":" + location.port : "");        
     }
 
     connect(){

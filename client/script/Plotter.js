@@ -145,4 +145,8 @@ class Plotter {
         
         return Promise.all(promises);
     }
+
+    resize(){
+        Plotly.Plots.resize(document.getElementById(this.currency));
+    }
 }
