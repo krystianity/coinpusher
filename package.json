@@ -4,7 +4,8 @@
   "description": "pushes coins in real-time",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "explore": "node explore.js"
   },
   "author": "Christian Fröhlingsdorf <chris@5cf.de>",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "bluebird": "^3.5.0",
     "debug": "^3.0.1",
     "express": "^4.15.4",
+    "moment": "^2.18.1",
     "node-bitstamp": "^1.1.1",
     "synaptic": "^1.1.2",
     "uws": "^8.14.1"
