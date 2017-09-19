@@ -17,6 +17,20 @@ class Plotter {
         document.getElementById("main").appendChild(div);
     }
 
+    _getPredTrace(predData){
+
+        return {
+            type: "scatter",
+            mode: "lines",
+            name: "prediction",
+            x: predData.x,
+            y: predData.y,
+            line: {
+                color: this.predColor 
+            }
+        };
+    }
+
     createPlot(streamData = {}, predData = {}){
 
         //x: ["2017-02-17", "2017-02-18", "2017-02-19"]
@@ -33,16 +47,7 @@ class Plotter {
             }
         };
 
-        const pred = {
-            type: "scatter",
-            mode: "lines",
-            name: "prediction",
-            x: predData.x,
-            y: predData.y,
-            line: {
-                color: this.predColor 
-            }
-        };
+        const pred = this._getPredTrace(predData);
         
         const plotData = [stream, pred];
             
@@ -136,11 +141,18 @@ class Plotter {
             }, [0]));
         }
             
+        /*
         if(newPredData){
             promises.push(Plotly.extendTraces(this.currency, {
                 x: [newPredData.x],
                 y: [newPredData.y]
             }, [1]));
+        }
+        */
+
+        if(newPredData){
+            Plotly.deleteTraces(this.currency, [1]);
+            Plotly.addTraces(this.currency, this._getPredTrace(newPredData));
         }
         
         return Promise.all(promises);

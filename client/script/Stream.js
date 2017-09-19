@@ -116,20 +116,21 @@ class Stream {
             //if a prediction is passed along, we have to map syntetic timestamps
             //as it only comes with y axis values
             const startingTime = this.timestampToMoment(trade.timestamp);
-            const xUnixTimestamps = [];
+            //const xUnixTimestamps = [];
             let counter = 1;
             pred = {
                 x: predicted.map(_ => {
                     //create syntetic timestamps for predictions starting from current trade
                     const timeClone = startingTime.clone();
                     timeClone.add(counter * 5, "seconds");
-                    xUnixTimestamps.push(timeClone.valueOf());
+                    //xUnixTimestamps.push(timeClone.valueOf());
                     counter++;
                     return this.momentToDateTime(timeClone);
                 }),
                 y: predicted
             };
 
+            /*
             //after a certain amount of trades, every new trade will contain
             //a fixed amount of predictions in the future, to keep the prediction
             //traces in the charts from overwriting each other, we have to filter out
@@ -151,6 +152,7 @@ class Stream {
             if(!pred.x.length){
                 pred = null;
             }
+            */
         }
 
         this._getOrCreatePlotter(currency).then(plotter => {
