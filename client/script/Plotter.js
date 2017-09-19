@@ -2,11 +2,16 @@
 
 class Plotter {
 
-    constructor(title, currency, color = "#9370DB", predColor = "#EE6363"){
+    constructor(title, currency, 
+            color = "#9370DB", 
+            predColor = "#EE6363",
+            constPredColor = "#C0DCC0"){
+
         this.title = title;
         this.currency = currency;
         this.color = color;
         this.predColor = predColor;
+        this.constPredColor = constPredColor;
     }
 
     createDomElement(){
@@ -47,9 +52,20 @@ class Plotter {
             }
         };
 
+        const constPred = {
+            type: "scatter",
+            mode: "lines",
+            name: "const_pred",
+            x: [],
+            y: [],
+            line: {
+                color: this.constPredColor 
+            }
+        };
+
         const pred = this._getPredTrace(predData);
         
-        const plotData = [stream, pred];
+        const plotData = [stream, constPred, pred];
             
         const plotLayout = {
             title: this.title, 
@@ -130,32 +146,28 @@ class Plotter {
         return Plotly.newPlot(this.currency, plotData, plotLayout);
     }
 
-    updatePlot(newStreamData = null, newPredData = null){
-
-        const promises = [];
+    updatePlot(newStreamData = null, newPredData = null, constPredData = null){
 
         if(newStreamData){
-            promises.push(Plotly.extendTraces(this.currency, {
+            Plotly.extendTraces(this.currency, {
                 x: [newStreamData.x],
                 y: [newStreamData.y]
-            }, [0]));
+            }, [0]);
         }
-            
-        /*
-        if(newPredData){
-            promises.push(Plotly.extendTraces(this.currency, {
-                x: [newPredData.x],
-                y: [newPredData.y]
-            }, [1]));
+        
+        if(constPredData){
+            Plotly.extendTraces(this.currency, {
+                x: [constPredData.x],
+                y: [constPredData.y]
+            }, [1]);
         }
-        */
-
+        
         if(newPredData){
-            Plotly.deleteTraces(this.currency, [1]);
+            Plotly.deleteTraces(this.currency, [2]);
             Plotly.addTraces(this.currency, this._getPredTrace(newPredData));
         }
         
-        return Promise.all(promises);
+        return Promise.resolve();
     }
 
     resize(){

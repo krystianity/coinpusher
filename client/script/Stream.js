@@ -49,6 +49,10 @@ class Stream {
             if(data.trade){
                 return this._onTrade(data.currency, data);
             }
+
+            if(data.ctrades){
+                return this.onConstPrediction(data.currency, data.ctrades);
+            }
         
             console.warn("unknown message", data);
         };
@@ -167,9 +171,20 @@ class Stream {
             pred
             ).catch(error => {
                 console.error("failed to update plot", error);
-            })
+            });
         }).catch(error => {
             console.error("failed to create or get plotter", error);
-        })
+        });
+    }
+
+    onConstPrediction(currency, trades){
+        this._getOrCreatePlotter(currency).then(plotter => {
+            plotter.updatePlot(null, null, {
+                x: [],
+                y: []
+            }).catch(error => {
+                console.error("failed to update plot", error);
+            });
+        });
     }
 }
