@@ -2,9 +2,9 @@
 
 class Stream {
 
-    constructor(url = null){
+    constructor(url = null, port = 3333){
 
-        this.url = url || this.getUrl();
+        this.url = url || this.getUrl(port);
         this.connection = null;
 
         this.plotters = {};
@@ -17,10 +17,10 @@ class Stream {
         };
     }
 
-    getUrl(){
+    getUrl(port){
         const location = window.location;
         return location.protocol === "https:" ? "wss:" : "ws:" + "//" 
-            + location.hostname + (location.port ? ":" + location.port : "");        
+            + location.hostname + ":" + port;       
     }
 
     connect(){
@@ -177,11 +177,11 @@ class Stream {
         });
     }
 
-    onConstPrediction(currency, trades){
+    onConstPrediction(currency, ctrades){
         this._getOrCreatePlotter(currency).then(plotter => {
             plotter.updatePlot(null, null, {
-                x: [],
-                y: []
+                x: ctrades.map(ctrade => this.convertTimestamp(ctrade.timestamp)),
+                y: ctrades.map(ctrade => ctrade.price)
             }).catch(error => {
                 console.error("failed to update plot", error);
             });

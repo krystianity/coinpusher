@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "explore": "node explore.js"
+    "explore": "node explore.js",
+    "bitcoin": "node index.js bitcoin",
+    "ethereum": "node index.js ethereum",
+    "litecoin": "node index.js litecoin"
   },
   "author": "Christian Fröhlingsdorf <chris@5cf.de>",
   "license": "ISC",
