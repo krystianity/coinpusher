@@ -2,9 +2,10 @@
 
 class Stream {
 
-    constructor(url = null, port = 3333){
+    constructor(url = null, port = 3333, performanceOnly = false){
 
         this.url = url || this.getUrl(port);
+        this.performanceOnly = performanceOnly;
         this.connection = null;
 
         this.plotters = {};
@@ -51,7 +52,21 @@ class Stream {
             }
 
             if(data.ctrades){
-                return this.onConstPrediction(data.currency, data.ctrades);
+                return this._onConstPrediction(data.currency, data.ctrades);
+            }
+
+            if(data.drift){
+                //TODO
+                return;
+            }
+
+            if(data.resolved){
+                //TODO
+                return;
+            }
+
+            if(data.performance){
+                return this._onPerformance(data.currency, data.performance);
             }
         
             console.warn("unknown message", data);
@@ -76,6 +91,17 @@ class Stream {
         }).then(() => {
             return plotter;
         });
+    }
+
+    _getOrCreatePerformancePlotter(name){
+
+        if(this.plotters[name]){
+            return Promise.resolve(this.plotters[name]);
+        }
+
+        const plotter = new Plotter(name, name);
+        plotter.createDomElement();
+        return plotter.createPerformancePlot();
     }
 
     timestampToMoment(unix){
@@ -110,7 +136,7 @@ class Stream {
     
     _onTrade(currency, {trade, predicted}){
         
-        if(!trade){
+        if(!trade || this.performanceOnly){
             return;
         }
 
@@ -177,7 +203,12 @@ class Stream {
         });
     }
 
-    onConstPrediction(currency, ctrades){
+    _onConstPrediction(currency, ctrades){
+
+        if(this.performanceOnly){
+            return;
+        }
+
         this._getOrCreatePlotter(currency).then(plotter => {
             plotter.updatePlot(null, null, {
                 x: ctrades.map(ctrade => this.convertTimestamp(ctrade.timestamp)),
@@ -185,6 +216,40 @@ class Stream {
             }).catch(error => {
                 console.error("failed to update plot", error);
             });
+        });
+    }
+
+    _onPerformance(currency, {expected, reality}){
+
+        if(!this.performanceOnly){
+            return;
+        }
+
+        this._getOrCreatePerformancePlotter("performance").then(plotter => {
+            
+            const data = {
+                x: [moment().format("YYYY-MM-DD HH:mm:ss")],
+                y: [reality]
+            };
+
+            switch(currency){
+
+                case "btceur": 
+                    plotter.updatePerformancePlot(data, 0);
+                break;
+
+                case "etheur":
+                    plotter.updatePerformancePlot(data, 1);
+                break;
+
+                case "ltceur":
+                    plotter.updatePerformancePlot(data, 2);
+                break;
+
+                default:
+                    console.warn("unknown currency " + currency);
+                break;
+            }
         });
     }
 }
