@@ -100,8 +100,11 @@ class Stream {
         }
 
         const plotter = new Plotter(name, name);
+        this.plotters[name] = plotter;
         plotter.createDomElement();
-        return plotter.createPerformancePlot();
+        return plotter.createPerformancePlot().then(() => {
+            return plotter;
+        });
     }
 
     timestampToMoment(unix){

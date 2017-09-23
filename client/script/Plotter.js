@@ -17,7 +17,7 @@ class Plotter {
 
     createDomElement(){
 
-        if(!document.getElementById(this.currency)){
+        if(document.getElementById(this.currency)){
             this.shallow = true;
             return;
         }
@@ -53,8 +53,8 @@ class Plotter {
             type: "scatter",
             mode: "lines",
             name: "bitcoin",
-            x: streamData.x,
-            y: streamData.y,
+            x: [],
+            y: [],
             line: {
                 color: this.color 
             }
