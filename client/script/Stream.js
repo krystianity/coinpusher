@@ -10,12 +10,12 @@ class Stream {
 
         this.plotters = {};
         this.predictionDraw = {};
+    }
 
-        window.onresize = () => {
-            Object.keys(this.plotters)
-                .map(key => this.plotters[key])
-                .forEach(plotter => plotter.resize());
-        };
+    resizePlots(){
+        Object.keys(this.plotters)
+        .map(key => this.plotters[key])
+        .forEach(plotter => plotter.resize());
     }
 
     getUrl(port){
@@ -222,7 +222,7 @@ class Stream {
         });
     }
 
-    _onPerformance(currency, {expected, reality}){
+    _onPerformance(currency, {timestamp, expected, reality}){
 
         if(!this.performanceOnly){
             return;
@@ -231,7 +231,7 @@ class Stream {
         this._getOrCreatePerformancePlotter("performance").then(plotter => {
             
             const data = {
-                x: [moment().format("YYYY-MM-DD HH:mm:ss")],
+                x: [this.convertTimestamp(timestamp)],
                 y: [reality]
             };
 

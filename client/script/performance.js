@@ -7,3 +7,9 @@ const litecoinStream = new Stream(null, 3335, true);
 bitcoinStream.connect();
 ethereumStream.connect();
 litecoinStream.connect();
+
+window.onresize = () => {
+    //bitcoinStream.resizePlots();
+    //ethereumStream.resizePlots();
+    litecoinStream.resizePlots();
+};

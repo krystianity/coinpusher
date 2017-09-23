@@ -11,3 +11,9 @@ setTimeout(() => {
         litecoinStream.connect();
         }, 2000);
 }, 2000);
+
+window.onresize = () => {
+    bitcoinStream.resizePlots();
+    ethereumStream.resizePlots();
+    litecoinStream.resizePlots();
+};
