@@ -37,5 +37,13 @@
     "trades",
     "trade",
     "bot"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krystianity/coinpusher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/krystianity/coinpusher/issues"
+  },
+  "homepage": "https://github.com/krystianity/coinpusher#readme"
 }
