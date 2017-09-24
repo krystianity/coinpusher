@@ -2,6 +2,8 @@
 
 ## for bitcoin, ethereum, litecoin on the Bitstamp platform
 
+### :gem: :chart_with_upwards_trend:
+
 ![graph screenshot](opener.png)
 
 ## Overview
