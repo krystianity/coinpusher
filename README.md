@@ -10,9 +10,11 @@
 * [Interfaces](#interfaces)
 * [Training Neuronal Networks](#training-neuronal-networks)
 * [How does it work?](#how-does-it-work)
-
-
+* [Additional](#additional)
+* [Client Info](#client-info)
+* [Adjusting Configuration](#adjusting-configuration)
 * [Attaching a trade bot](#attaching-a-trade-bot)
+* [More Screenshots](#more-screenshots)
 
 ## Info
 
@@ -26,7 +28,7 @@
     state of the currencies course
 * emits events that make it easy to implement auto-trading of the currencies
 
-![graph screenshot](graph.png)
+![graph screenshot](opener.png)
 
 ## Requires
 
@@ -97,11 +99,69 @@
 * [Plotly.js](https://plot.ly/javascript/)
 * [Moment.js](https://momentjs.com)
 
+## Adjusting Configuration
+
+* To alter the dataset size etc. checkout the "const" variables in the first lines of `./lib/Coinpusher.js`
+* To adjust the network layers checkout "createNewNetwork()" in `./lib/NeuronalNetworkFactory.js`
+* To adjust the network architecture checkout the `./lib/NeuronalNetwork.js` helper class
+* To change `input-` and `output-vectors` of the network take a look at the `ETLS` object of `./lib/Coinpusher.js`
+* Websocket & HTTP setup can be found in `./lib/SocketServer.js`
+* Changing the port of the http and websocket server can be done by altering the arguments 
+    in "start()" of `./lib/Coinpusher.js`
+
 ## Attaching a trade bot
 
-* Its actually quite easy to get started
-* 
+Its actually quite easy to get started:
+
+```javascript
+    const {Bitstamp, CURRENCY} = require("node-bitstamp");
+    const Coinpusher = require("./lib/Coinpusher.js");
+
+    const bitstamp = new Bitstamp({
+        key,
+        secret,
+        clientId
+    });
+
+    const cp = new Coinpusher();
+    cp.start(CURRENCY.BTC_EUR, 3333).then(() => {
+        
+        //subscribe to the drift event (apprx. emmits every ~ 12 minutes)
+        //the prediction will be placed in the future apprx. ~ 9,6 minutes
+        //the timing are apprx. because they depend on the output vector size which is configurable
+        //we currently set the size to 278 and assume n seconds distance between trades e.g. 278 * 5 seconds
+        //the futureValue is a median value taken from the last 20% of outputs
+        cp.on("drift", data => {
+
+            const {
+                id, //uuid.v4
+                drift, // e.g. -12.5
+                timestamp, // unix seconds
+                currentValue, // current course value -> 3440.0
+                futureValue, // predicted course value -> 3452.5
+                timestampFormatted, //YYYY-MM-DD HH:mm:ss
+                currency //btceur
+            } = data;
+
+            //depening on the last action buy or sell you can now plan
+            //the next action you might make
+
+            //buy
+            bitstamp.buyLimitOrder(amount, price, currency, limit_price, daily_order);
+
+            //or sell
+            bitstamp.sellLimitOrder(amount, price, currency, limit_price, daily_order);
+
+            //obviously this requires some additional tracking of account capacity
+            //limit tresholds, as well as taking care of fee calculations.. etc..
+        });
+    });
+```
+
+More infos about the Bitstamp API client can be found [here](https://github.com/krystianity/node-bitstamp)
 
 ## More Screenshots
+
+![graph screenshot](graph.png)
 
 ![performance screenshot](performance.png)
