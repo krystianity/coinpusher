@@ -17,6 +17,7 @@
 * [Adjusting Configuration](#adjusting-configuration)
 * [Attaching a trade bot](#attaching-a-trade-bot)
 * [More Screenshots](#more-screenshots)
+* [License](#license)
 
 ## Info
 
@@ -166,3 +167,8 @@ More infos about the Bitstamp API client can be found [here](https://github.com/
 ![graph screenshot](graph.png)
 
 ![performance screenshot](performance.png)
+
+## License
+
+* Mozilla Public License Version 2.0
+* Contact me if you need help or require a different license
