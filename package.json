@@ -1,17 +1,17 @@
 {
   "name": "coinpusher",
   "version": "1.0.0",
-  "description": "pushes coins in real-time",
+  "description": "real-time cryptocurrency prediction with charts front-end",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "explore": "node explore.js",
-    "bitcoin": "node index.js bitcoin",
-    "ethereum": "node index.js ethereum",
-    "litecoin": "node index.js litecoin"
+    "bitcoin": "DEBUG=coinpusher:* node index.js bitcoin",
+    "ethereum": "DEBUG=coinpusher:* node index.js ethereum",
+    "litecoin": "DEBUG=coinpusher:* node index.js litecoin"
   },
   "author": "Christian Fröhlingsdorf <chris@5cf.de>",
-  "license": "ISC",
+  "license": "MPL-2.0",
   "dependencies": {
     "async": "^2.5.0",
     "bluebird": "^3.5.0",
@@ -23,5 +23,19 @@
     "synaptic": "^1.1.2",
     "uuid": "^3.1.0",
     "uws": "^8.14.1"
-  }
+  },
+  "keywords": [
+    "real-time",
+    "cryptocurrency",
+    "bitstamp",
+    "neuronal",
+    "network",
+    "lstm",
+    "prediction",
+    "charts",
+    "live",
+    "trades",
+    "trade",
+    "bot"
+  ]
 }

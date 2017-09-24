@@ -115,7 +115,8 @@ Its actually quite easy to get started:
 
 ```javascript
     const {Bitstamp, CURRENCY} = require("node-bitstamp");
-    const Coinpusher = require("./lib/Coinpusher.js");
+    //you can also install via npm i coinpusher or yarn add coinpusher
+    const {Coinpusher} = require("coinpusher"); //alt. require("./lib/Coinpusher.js");
 
     const bitstamp = new Bitstamp({
         key,
