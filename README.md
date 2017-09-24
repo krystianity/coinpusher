@@ -1,6 +1,8 @@
-# real-time bitstamp neuronal network (bitcoin, ethereum, litecoin) course prediction
+# real-time cryptocurrency course neuronal network prediction
 
-## aka coinpusher
+## for bitcoin, ethereum, litecoin on the Bitstamp platform
+
+![graph screenshot](opener.png)
 
 ## Overview
 
@@ -27,8 +29,6 @@
 * rates its own performance by remembering predictions it made and comparing them to the real
     state of the currencies course
 * emits events that make it easy to implement auto-trading of the currencies
-
-![graph screenshot](opener.png)
 
 ## Requires
 

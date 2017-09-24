@@ -1,7 +1,7 @@
 {
   "name": "coinpusher",
   "version": "1.0.0",
-  "description": "real-time cryptocurrency prediction with charts front-end",
+  "description": "real-time cryptocurrency course prediction with charts front-end",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
