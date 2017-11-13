@@ -21,6 +21,16 @@
 * [More Screenshots](#more-screenshots)
 * [License](#license)
 
+## Donate
+
+* If this client helped you, feel free to buy me a :beer:
+* BTC: `3FX5SGcizKVwsezqFRbDVgQ7UhGwx6XArU`
+* ETH: `0x54e0a18386eb7831de38a438cd3fc0162e5d33e6`
+* LTC: `MUJgac5DYntbvjH7zLAjjjm3z9QgPfVLgH`
+* Donations are much appreciated.
+* If you dont want to give away money, starring the project is also a way of saying
+    thank you :)
+
 ## Info
 
 * automatically builds a dataset for each currency on live-trades from `https://www.bitstamp.net` using the pusher api
